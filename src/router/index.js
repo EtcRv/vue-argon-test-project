@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import DashboardLayout from "@/layout/DashboardLayout";
-import AuthLayout from "@/layout/AuthLayout";
 
 import Dashboard from "../views/Dashboard.vue";
 
@@ -27,26 +26,16 @@ const routes = [
     ],
   },
   {
-    path: "/",
-    redirect: "login",
-    component: AuthLayout,
-    children: [
-      {
-        path: "/login",
-        name: "login",
-        components: { default: LoginScreen },
-      },
-      {
-        path: "/register",
-        name: "register",
-        component: RegisterScreen,
-      },
-    ],
+    path: "/login",
+    component: LoginScreen,
+  },
+  {
+    path: "/register",
+    component: RegisterScreen,
   },
 
   {
     path: "/user",
-
     component: MenuUserPage,
   },
   {
