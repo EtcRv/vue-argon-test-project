@@ -84,30 +84,33 @@ export default {
         id: "",
         password: "",
       },
-      exampleAccount: {
-        id: "abcabc",
-        password: "123456",
-      },
+      accountsData: this.$store.getters.accountsData,
       errorSignIn: false,
     };
   },
   methods: {
     submitFormHandle(id, password) {
+      let flag = 0;
       // Check user
-
-      if (
-        id == this.exampleAccount.id &&
-        password == this.exampleAccount.password
-      ) {
-        // If user is true
-        window.location.href = "/user";
-      } else {
-        // If user is false
+      for (let i = 0; i < this.accountsData.length; i++) {
+        if (
+          id == this.accountsData[i].id &&
+          password == this.accountsData[i].password
+        ) {
+          window.location.href = "/user";
+          flag = 1;
+          break;
+        }
+      }
+      if (flag == 0) {
         this.user.id = id;
         this.user.password = "";
         this.errorSignIn = true;
       }
     },
+  },
+  created() {
+    this.$store.dispatch("getAccountsDataFromAPI");
   },
 };
 </script>
