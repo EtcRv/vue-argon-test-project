@@ -8,7 +8,7 @@
 
         <div class="card bg-secondary shadow border-0 mb-5">
           <div class="card-header px-lg-5 py-lg-5">
-            <form role="form">
+            <form @submit.prevent="submitFormHandle">
               <div class="register-form">
                 <div class="register-form_left">
                   <!-- Name -->
@@ -229,12 +229,7 @@
                   v-show="errorRegister == true"
                   >Tên tài khoản đã tồn tại</strong
                 >
-                <base-button
-                  type="primary"
-                  @click="submitFormHandle"
-                  style="width: 40%"
-                  >登録</base-button
-                >
+                <button type="submit" style="width: 40%">登録</button>
               </div>
             </form>
           </div>
@@ -318,6 +313,7 @@ export default {
       }
       if (flag == 7) {
         this.postAccountToAccountsData();
+
         this.registerPart = "Part2";
       }
     },
