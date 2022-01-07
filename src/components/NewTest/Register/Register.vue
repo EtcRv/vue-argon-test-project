@@ -289,33 +289,39 @@ export default {
   },
   methods: {
     submitFormHandle() {
-      let flag = 0;
-      if (this.checkNameInNewUsers()) {
-        flag++;
-      }
-      if (this.checkEmailInNewUsers()) {
-        flag++;
-      }
-      if (this.checkCompanyNameInNewUsers()) {
-        flag++;
-      }
-      if (this.checkPasswordInNewUsers()) {
-        flag++;
-      }
-      if (this.checkConfirmPasswordInNewUsers()) {
-        flag++;
-      }
-      if (this.checkTypeInNewUsers()) {
-        flag++;
-      }
-      if (!this.checkNewUserInAccounts() && this.checkIdInNewUsers()) {
-        flag++;
-      }
-      if (flag == 7) {
-        this.postAccountToAccountsData();
+      this.newUserIsValid.name = this.checkInputInNewUsers(this.newUser.name);
+      this.newUserIsValid.email = this.checkInputInNewUsers(this.newUser.email);
+      this.newUserIsValid.companyName = this.checkInputInNewUsers(
+        this.newUser.companyName
+      );
+      this.newUserIsValid.id =
+        this.checkInputInNewUsers(this.newUser.id) &&
+        !this.checkNewUserInAccounts();
+      this.newUserIsValid.type = this.checkInputInNewUsers(this.newUser.type);
+      this.newUserIsValid.password = this.checkPasswordInNewUsers();
+      this.newUserIsValid.confirmPassword = this.checkConfirmPasswordInNewUsers();
 
+      // Nếu không có input nào bị lỗi, thì post dữ liệu lên và chuyển trang
+      if (
+        this.newUserIsValid.name &&
+        this.newUserIsValid.email &&
+        this.newUserIsValid.companyName &&
+        this.newUserIsValid.id &&
+        this.newUserIsValid.type &&
+        this.newUserIsValid.password &&
+        this.newUserIsValid.confirmPassword
+      ) {
+        this.postAccountToAccountsData();
         this.registerPart = "Part2";
       }
+    },
+
+    // Kiểm tra xem input nhập có rỗng hay không.
+    checkInputInNewUsers(valueCheck) {
+      if (valueCheck.trim().length == 0) {
+        return false;
+      }
+      return true;
     },
 
     // Kiểm tra tài khoản đăng ký đã tồn tại hay chưa
@@ -335,46 +341,10 @@ export default {
         return false;
       }
     },
-    // Kiểm tra xem id tài khoản có trống hay không
-    checkIdInNewUsers() {
-      if (this.newUser.id.trim().length == 0) {
-        this.newUserIsValid.id = false;
-        return false;
-      }
-      return true;
-    },
 
-    // Kiểm tra xem name có trống hay không
-    checkNameInNewUsers() {
-      if (this.newUser.name.trim().length == 0) {
-        this.newUserIsValid.name = false;
-        return false;
-      }
-      return true;
-    },
-
-    // Kiểm tra xem email có trống hay không
-    checkEmailInNewUsers() {
-      if (this.newUser.email.trim().length == 0) {
-        this.newUserIsValid.email = false;
-        return false;
-      }
-      return true;
-    },
-
-    // Kiểm tra xem name có trống hay không
-    checkCompanyNameInNewUsers() {
-      if (this.newUser.companyName.trim().length == 0) {
-        this.newUserIsValid.companyName = false;
-        return false;
-      }
-      return true;
-    },
-
-    // Kiểm tra xem password có trống hay không
+    // Kiểm tra xem password có thỏa mãn hay không
     checkPasswordInNewUsers() {
       if (this.newUser.password.trim().length < 6) {
-        this.newUserIsValid.password = false;
         return false;
       }
       return true;
@@ -386,16 +356,6 @@ export default {
         this.newUser.confirmPassword.trim().length == 0 ||
         this.newUser.confirmPassword != this.newUser.password
       ) {
-        this.newUserIsValid.confirmPassword = false;
-        return false;
-      }
-      return true;
-    },
-
-    // Kiểm tra xem type có trống và trùng hay không
-    checkTypeInNewUsers() {
-      if (this.newUser.type == "") {
-        this.newUserIsValid.type = false;
         return false;
       }
       return true;
