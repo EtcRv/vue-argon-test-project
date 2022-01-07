@@ -11,13 +11,23 @@
     <div class="admin-content-button-table">
       <div class="table-responsive">
         <div class="button-sort">
-          <base-button type="primary" size="sm">案件名順</base-button>
-          <base-button type="primary" size="sm">クライアント名順</base-button>
-          <base-button type="primary" size="sm">ステータス名順</base-button>
-          <base-button type="primary" size="sm">納期早い順</base-button>
-          <base-button type="primary" size="sm">納期遅い順</base-button>
+          <base-button type="primary" size="sm" @click="OnClickSortProjectName"
+            >案件名順</base-button
+          >
+          <base-button type="primary" size="sm" @click="OnClickSortCustomer"
+            >クライアント名順</base-button
+          >
+          <base-button type="primary" size="sm" @click="OnClickSortStatus"
+            >ステータス名順</base-button
+          >
+          <base-button type="primary" size="sm" @click="OnClickSortDayStart"
+            >納期早い順</base-button
+          >
+          <base-button type="primary" size="sm" @click="OnClickSortDayEnd"
+            >納期遅い順</base-button
+          >
         </div>
-        <base-table thead-classes="thead-light" :data="adminContentsDataShow">
+        <base-table thead-classes="thead-light" :data="contentsDataShow">
           <template v-slot:columns>
             <th>案件名</th>
             <th>クライアント名</th>
@@ -27,24 +37,24 @@
             <th>備考</th>
           </template>
 
-          <template v-slot:default="adminContentsDataShow">
+          <template v-slot:default="contentsDataShow">
             <th scope="row">
-              {{ adminContentsDataShow.item.prjname }}
+              {{ contentsDataShow.item.prjname }}
             </th>
             <td>
-              {{ adminContentsDataShow.item.customer }}
+              {{ contentsDataShow.item.customer }}
             </td>
             <td>
-              {{ adminContentsDataShow.item.status }}
+              {{ contentsDataShow.item.status }}
             </td>
             <td>
-              {{ adminContentsDataShow.item.dayStart }}
+              {{ contentsDataShow.item.dayStart }}
             </td>
             <td>
-              {{ adminContentsDataShow.item.dayLimited }}
+              {{ contentsDataShow.item.dayLimited }}
             </td>
             <td>
-              {{ adminContentsDataShow.item.comment }}
+              {{ contentsDataShow.item.comment }}
             </td>
           </template>
         </base-table>
@@ -55,8 +65,28 @@
 
 <script>
 export default {
-  name: "Admin content",
-  props: ["adminContentsDataShow"],
+  name: "Menu Content",
+  props: ["contentsDataShow"],
+  data() {
+    return {};
+  },
+  methods: {
+    OnClickSortProjectName() {
+      this.$emit("sortByPrjName");
+    },
+    OnClickSortCustomer() {
+      this.$emit("sortByCustomer");
+    },
+    OnClickSortStatus() {
+      this.$emit("sortByStatus");
+    },
+    OnClickSortDayStart() {
+      this.$emit("sortByDayStart");
+    },
+    OnClickSortDayEnd() {
+      this.$emit("sortByDayEnd");
+    },
+  },
 };
 </script>
 
